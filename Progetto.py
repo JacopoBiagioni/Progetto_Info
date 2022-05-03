@@ -50,6 +50,22 @@ def Friuli():
 def Emilia():
     return render_template('Emilia.html')
 
+@app.route('/Toscana', methods=['GET'])
+def Toscana():
+    return render_template('Toscana.html')
+
+@app.route('/Marche', methods=['GET'])
+def Marche():
+    return render_template('Marche.html')
+
+@app.route('/Umbria', methods=['GET'])
+def Umbria():
+    return render_template('Umbria.html')
+
+@app.route('/Lazio', methods=['GET'])
+def Lazio():
+    return render_template('Lazio.html')
+
 
 
 if __name__ == '__main__':
