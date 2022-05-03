@@ -13,7 +13,7 @@ import pandas as pd
 
 covid = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
 regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
-print(covid)
+province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
 @app.route('/', methods=['GET'])
 def home():
     return render_template('home.html')
@@ -23,10 +23,24 @@ def home():
 def Aosta():
     return render_template("Aosta.html")
 
+@app.route('/liguria.png', methods=['GET'])
+def liguriapng():
+    fig, ax = plt.subplots(figsize = (12,8))
+
+    liguria.to_crs(epsg=3857).plot(ax=ax,facecolor='none', edgecolor="k")
+    contextily.add_basemap(ax=ax)   
+
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+
 @app.route('/Liguria', methods=['GET'])
 def Liguria():
+    global liguria
+    liguria = regioni[regioni["DEN_REG"] == "Liguria"]
     return render_template("Liguria.html")
-
+    
 @app.route('/Piemonte', methods=['GET'])
 def Piemonte():
     return render_template("Piemonte.html")
