@@ -18,68 +18,31 @@ province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
 def home():
     return render_template('home.html')
 
+@app.route('/regione/<nome_regione>', methods=['GET'])
+def regione(nome_regione):
+    dati_regione = regioni[regioni["DEN_REG"] == nome_regione]
+    confini_regione = regioni[regioni.touches(dati_regione.geometry.squeeze())]
+    province_regione = province[province.within(dati_regione.geometry.squeeze())]
 
-@app.route('/Aosta', methods=['GET'])
-def Aosta():
-    return render_template("Aosta.html")
+    return render_template('visualizza_regione.html',regione=nome_regione,confini=confini_regione.DEN_REG.to_list())
 
-@app.route('/liguria.png', methods=['GET'])
+
+@app.route('/regione.png', methods=['GET'])
 def liguriapng():
     fig, ax = plt.subplots(figsize = (12,8))
 
+   
+    Pliguria.to_crs(epsg=3857).plot(ax=ax,facecolor='none', edgecolor="r")
     liguria.to_crs(epsg=3857).plot(ax=ax,facecolor='none', edgecolor="k")
-    contextily.add_basemap(ax=ax)   
+    contextily.add_basemap(ax=ax)  
 
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
 
 
-@app.route('/Liguria', methods=['GET'])
-def Liguria():
-    global liguria
-    liguria = regioni[regioni["DEN_REG"] == "Liguria"]
-    return render_template("Liguria.html")
-    
-@app.route('/Piemonte', methods=['GET'])
-def Piemonte():
-    return render_template("Piemonte.html")
 
-@app.route('/Lombardia', methods=['GET'])
-def Lombardia():
-    return render_template('Lombardia.html')
-
-@app.route('/Trentino', methods=['GET'])
-def Trentino():
-    return render_template('Trentino.html')
-
-@app.route('/Veneto', methods=['GET'])
-def Veneto():
-    return render_template('Veneto.html')
-
-@app.route('/Friuli', methods=['GET'])
-def Friuli():
-    return render_template('Friuli.html')
-
-@app.route('/Emilia', methods=['GET'])
-def Emilia():
-    return render_template('Emilia.html')
-
-@app.route('/Toscana', methods=['GET'])
-def Toscana():
-    return render_template('Toscana.html')
-
-@app.route('/Marche', methods=['GET'])
-def Marche():
-    return render_template('Marche.html')
-
-@app.route('/Umbria', methods=['GET'])
-def Umbria():
-    return render_template('Umbria.html')
-
-@app.route('/Lazio', methods=['GET'])
-def Lazio():
-    return render_template('Lazio.html')
+   
 
 
 
