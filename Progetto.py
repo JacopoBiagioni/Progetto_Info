@@ -1,4 +1,3 @@
-# covid= https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv
 from flask import Flask, render_template, send_file, make_response, url_for, Response,request,redirect
 app = Flask(__name__)
 # pip install flask pandas contextily geopandas matplotlib
@@ -12,7 +11,9 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
+covid = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
+regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
+print(covid)
 @app.route('/', methods=['GET'])
 def home():
     return render_template('home.html')
