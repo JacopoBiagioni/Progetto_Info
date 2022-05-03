@@ -19,12 +19,38 @@ def home():
 
 
 @app.route('/Aosta', methods=['GET'])
-def aosta():
+def Aosta():
     return render_template("Aosta.html")
 
 @app.route('/Liguria', methods=['GET'])
 def Liguria():
     return render_template("Liguria.html")
+
+@app.route('/Piemonte', methods=['GET'])
+def Piemonte():
+    return render_template("Piemonte.html")
+
+@app.route('/Lombardia', methods=['GET'])
+def Lombardia():
+    return render_template('Lombardia.html')
+
+@app.route('/Trentino', methods=['GET'])
+def Trentino():
+    return render_template('Trentino.html')
+
+@app.route('/Veneto', methods=['GET'])
+def Veneto():
+    return render_template('Veneto.html')
+
+@app.route('/Friuli', methods=['GET'])
+def Friuli():
+    return render_template('Friuli.html')
+
+@app.route('/Emilia', methods=['GET'])
+def Emilia():
+    return render_template('Emilia.html')
+
+
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=3245, debug=True)
