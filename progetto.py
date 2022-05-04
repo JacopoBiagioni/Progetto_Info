@@ -42,7 +42,9 @@ def regionepng():
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
 
-
+@app.route('/info_regione', methods=['GET'])
+def info():
+    return render_template('info.html')
 
    
 
