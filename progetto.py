@@ -12,10 +12,22 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 
-covid = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
+df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
 regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
 province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
-print(regioni)
+
+df = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
+
+df2 = df['data'].str.replace('T', ' ')
+
+df3['data'] = pd.to_datetime(df['data'])
+
+
+
+
+
+
+
 @app.route('/', methods=['GET'])
 def home():
     return render_template('home.html')
