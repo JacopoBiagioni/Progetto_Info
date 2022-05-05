@@ -1,6 +1,7 @@
 from flask import Flask, render_template, send_file, make_response, url_for, Response,request,redirect
 app = Flask(__name__)
-# pip install flask pandas contextily geopandas matplotlib
+# pip install flask pandas contextily geopandas matplotlib folium
+import folium
 import io
 import geopandas as gpd
 import contextily
