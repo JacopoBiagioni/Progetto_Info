@@ -16,11 +16,11 @@ df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati
 regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
 province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
 
-df = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
+'''df = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
 
 df2 = df['data'].str.replace('T', ' ')
 
-df3['data'] = pd.to_datetime(df['data'])
+df3['data'] = pd.to_datetime(df['data'])'''
 
 
 
