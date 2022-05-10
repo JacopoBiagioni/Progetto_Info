@@ -71,7 +71,7 @@ def grafico():
     
 
     return render_template("grafico.html", tabella = grafico.to_html())
-
+#g
 
 
 
