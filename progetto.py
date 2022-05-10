@@ -16,16 +16,6 @@ df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati
 regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
 province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
 
-'''df = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
-
-df2 = df['data'].str.replace('T', ' ')
-
-df3['data'] = pd.to_datetime(df['data'])'''
-
-
-
-
-
 
 
 @app.route('/', methods=['GET'])
@@ -57,9 +47,54 @@ def regionepng():
 
 @app.route('/info_regione', methods=['GET'])
 def info():
+
     return render_template('info.html')
 
-   
+@app.route('/scelta', methods=['GET'])
+def scelta():
+    info = request.args['scelta']
+    if info == "grafico":
+        return redirect(url_for("grafico"))
+    else:
+        return redirect(url_for('info'))
+'''df = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
+df.dropna(subset = ["totale_positivi_test_molecolare"], inplace=True)
+df[df['denominazione_regione'] == nome_regione].plot(figsize=(20,20) , x='periodo', y ='totale_positivi_test_molecolare')'''
+
+@app.route("/grafico", methods=["GET"])
+
+def grafico():
+    
+    df1 = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
+    df1.dropna(subset = ["totale_positivi_test_molecolare"], inplace=True)
+    grafico = df1[df1['denominazione_regione'] == 'nome_regione'].plot(figsize=(20,20) , x='periodo', y ='totale_positivi_test_molecolare')
+    
+
+    return render_template("grafico.html", tabella = grafico.to_html())
+
+
+
+
+@app.route("/grafico.png", methods=["GET"])
+
+def graficopng():
+
+    fig, ax = plt.subplots(figsize = (12,8))
+
+
+
+
+    
+
+
+
+
+    output = io.BytesIO()
+
+    FigureCanvas(fig).print_png(output)
+
+    return Response(output.getvalue(), mimetype='image/png')
+
 
 
 
