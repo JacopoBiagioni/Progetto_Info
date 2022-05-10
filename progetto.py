@@ -11,7 +11,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
-
+#pd.plotting.register_matplotlib_converters()
 df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
 regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
 province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
@@ -24,7 +24,8 @@ def home():
 
 @app.route('/regione/<nome_regione>', methods=['GET'])
 def regione(nome_regione):
-    global dati_regione,province_regione
+    global dati_regione,province_regione, nome_reg
+    nome_reg = nome_regione
     dati_regione = regioni[regioni["DEN_REG"] == nome_regione]
     confini_regione = regioni[regioni.touches(dati_regione.geometry.squeeze())]
     province_regione = province[province.within(dati_regione.geometry.squeeze())]
@@ -57,45 +58,38 @@ def scelta():
         return redirect(url_for("grafico"))
     else:
         return redirect(url_for('info'))
-'''df = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
-df.dropna(subset = ["totale_positivi_test_molecolare"], inplace=True)
-df[df['denominazione_regione'] == nome_regione].plot(figsize=(20,20) , x='periodo', y ='totale_positivi_test_molecolare')'''
+
 
 @app.route("/grafico", methods=["GET"])
 
 def grafico():
-    
+    global df, df1,df3
+    df3 = df
+    df3['data'] = pd.to_datetime(df['data'])
+    df['periodo']= df3['data'] #.dt.to_period('D')
     df1 = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
     df1.dropna(subset = ["totale_positivi_test_molecolare"], inplace=True)
-    grafico = df1[df1['denominazione_regione'] == 'nome_regione'].plot(figsize=(20,20) , x='periodo', y ='totale_positivi_test_molecolare')
+    df = df[~df.denominazione_regione.str.contains("P.A.")]
+    
     
 
-    return render_template("grafico.html", tabella = grafico.to_html())
-#g
+    return render_template("grafico.html" )
 
 
 
 @app.route("/grafico.png", methods=["GET"])
-
 def graficopng():
-
     fig, ax = plt.subplots(figsize = (12,8))
+    dfrisultato = df1[df1['denominazione_regione'] == 'Lombardia']
+   
+    # print(dfrisultato.dtypes)
 
-
-
-
-    
-
-
-
-
+    # dfrisultato["periodo"] = dfrisultato["periodo"].astype(str)
+    ax.plot(dfrisultato.periodo, dfrisultato.totale_positivi_test_molecolare)
+    print(dfrisultato)
     output = io.BytesIO()
-
     FigureCanvas(fig).print_png(output)
-
     return Response(output.getvalue(), mimetype='image/png')
-
-
 
 
 if __name__ == '__main__':
