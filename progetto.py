@@ -1,6 +1,6 @@
 from flask import Flask, render_template, send_file, make_response, url_for, Response,request,redirect
 app = Flask(__name__)
-# pip install flask pandas contextily geopandas matplotlib folium
+# pip install flask pandas contextily geopandas matplotlib folium lxml
 import folium
 import io
 import geopandas as gpd
@@ -15,8 +15,8 @@ import pandas as pd
 df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
 Regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
 province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
-#regioni = pd.read_html('https://www.tuttitalia.it/regioni/popolazione/')
-
+regioni = pd.read_html('https://www.tuttitalia.it/regioni/popolazione/')[0]
+regioni = regioni.filter(items=['Regione', 'Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²','NumeroComuni','NumeroProvince']).reset_index(drop=True)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -63,9 +63,9 @@ def scelta():
 
 @app.route('/informazioni', methods=['GET'])
 def informazioni():
-    informazioni_regione_selezionata =  Regioni[Regioni["DEN_REG"] == nome_regione]
-    informazioni_regione = 
-    return render_template('informazioni.html', tabella =informazioni_regione.to_html())
+    informazioni_regione_selezionata =  regioni[regioni["Regione"] == nome_reg]
+     
+    return render_template('informazioni.html', regione = nome_reg, tabella =informazioni_regione_selezionata.to_html())
 
 
 
