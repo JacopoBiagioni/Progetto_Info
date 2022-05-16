@@ -15,12 +15,14 @@ import pandas as pd
 df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
 Regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
 province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
+print(province)
 regioni = pd.read_html('https://www.tuttitalia.it/regioni/popolazione/')[0]
 regioni = regioni.filter(items=['Regione', 'Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²','NumeroComuni','NumeroProvince']).reset_index(drop=True)
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('home.html')
+    
+    return render_template('home.html',regioni = regioni.to_html())
 
 @app.route('/regione/<nome_regione>', methods=['GET'])
 def regione(nome_regione):
@@ -31,7 +33,7 @@ def regione(nome_regione):
     province_regione = province[province.within(dati_regione.geometry.squeeze())]
     
 
-    return render_template('visualizza_regione.html',regione=nome_regione,confini=confini_regione.DEN_REG.to_list(),province_regione=province_regione.DEN_PROV.to_list())
+    return render_template('visualizza_regione.html',regione=nome_regione,confini=confini_regione.DEN_REG.to_list(),province_regione=province_regione.DEN_PROV.to_list(), regioni=)
 
 
 @app.route('/mappa.png', methods=['GET'])
