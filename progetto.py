@@ -15,7 +15,7 @@ import pandas as pd
 df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
 Regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
 province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
-print(province)
+
 regioni = pd.read_html('https://www.tuttitalia.it/regioni/popolazione/')[0]
 regioni = regioni.filter(items=['Regione', 'Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²','NumeroComuni','NumeroProvince']).reset_index(drop=True)
 
@@ -26,14 +26,14 @@ def home():
 
 @app.route('/regione/<nome_regione>', methods=['GET'])
 def regione(nome_regione):
-    global dati_regione, nome_reg,confini_regione , province_regione
+    global dati_regione, nome_reg,confini_regione,province_regione
     nome_reg = nome_regione
     dati_regione = Regioni[Regioni["DEN_REG"] == nome_regione]
     confini_regione = Regioni[Regioni.touches(dati_regione.geometry.squeeze())]
     province_regione = province[province.within(dati_regione.geometry.squeeze())]
     
 
-    return render_template('visualizza_regione.html',regione=nome_regione,confini=confini_regione.DEN_REG.to_list(),province_regione=province_regione.DEN_PROV.to_list(), regioni=)
+    return render_template('visualizza_regione.html',regione=nome_regione)
 
 
 @app.route('/mappa.png', methods=['GET'])
@@ -65,8 +65,20 @@ def scelta():
 
 @app.route('/informazioni', methods=['GET'])
 def informazioni():
+    
+    province_regione = province[province.within(dati_regione.geometry.squeeze())]
+    confini_regione = Regioni[Regioni.touches(dati_regione.geometry.squeeze())]
+    lst = province_regione.DEN_PROV.to_list()
+    lst1 = confini_regione.DEN_REG.to_list()
+    regioni["province_regione"] = ""
+    regioni["regioni_confinanti"] = ""
+    for i in range(0, len(regioni)):
+        regioni.at[i, 'province_regione'] = lst
+        regioni.at[i, 'regioni_confinanti'] = lst1
     informazioni_regione_selezionata =  regioni[regioni["Regione"] == nome_reg]
-     
+    regioni['province_regione'].astype(str)
+    regioni['regioni_confinanti'].astype(str)
+
     return render_template('informazioni.html', regione = nome_reg, tabella =informazioni_regione_selezionata.to_html())
 
 
