@@ -37,7 +37,7 @@ def regione(nome_regione):
     confini_regione = Regioni[Regioni.touches(dati_regione.geometry.squeeze())]
     province_regione = province[province.within(dati_regione.geometry.squeeze())]
     province_regione1 = info_prov[info_prov.within(dati_regione.geometry.squeeze())][['DEN_UTS','SIGLA','Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²']]
-    
+    province_regione2 = info_prov[info_prov.within(dati_regione.geometry.squeeze())]
     return render_template('visualizza_regione.html',regione=nome_regione,info=province_regione1.to_html())
 
 
