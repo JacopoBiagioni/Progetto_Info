@@ -15,7 +15,12 @@ import pandas as pd
 df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
 Regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
 province = gpd.read_file('/workspace/Progetto_Info/ProvCM01012021_g_WGS84.zip')
-
+prov = pd.read_html('https://www.tuttitalia.it/province/')[0]
+prov.filter(items=['Provincia/Città Metropolitana', 'Popolazioneresidenti	','Superficiekm²','Densitàabitanti/km²','NumeroComuni',]).reset_index(drop=True)
+prov['SIGLA']=prov['Provincia/Città Metropolitana'].str[:2]
+info_prov = pd.merge(prov,province,how='inner',on ='SIGLA')
+info_prov.filter(items=['DEN_PROV','SIGLA','Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²','NumeroComuni','geometry'])
+info_prov = info_prov.set_geometry("geometry")
 regioni = pd.read_html('https://www.tuttitalia.it/regioni/popolazione/')[0]
 regioni = regioni.filter(items=['Regione', 'Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²','NumeroComuni','NumeroProvince']).reset_index(drop=True)
 
@@ -31,9 +36,9 @@ def regione(nome_regione):
     dati_regione = Regioni[Regioni["DEN_REG"] == nome_regione]
     confini_regione = Regioni[Regioni.touches(dati_regione.geometry.squeeze())]
     province_regione = province[province.within(dati_regione.geometry.squeeze())]
+    province_regione1 = info_prov[info_prov.within(dati_regione.geometry.squeeze())][['DEN_UTS','SIGLA','Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²']]
     
-
-    return render_template('visualizza_regione.html',regione=nome_regione)
+    return render_template('visualizza_regione.html',regione=nome_regione,info=province_regione1.to_html())
 
 
 @app.route('/mappa.png', methods=['GET'])
