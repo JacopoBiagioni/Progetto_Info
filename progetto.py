@@ -23,7 +23,6 @@ info_prov.filter(items=['DEN_PROV','SIGLA','Popolazioneresidenti','Superficiekm�
 info_prov = info_prov.set_geometry("geometry")
 regioni = pd.read_html('https://www.tuttitalia.it/regioni/popolazione/')[0]
 regioni = regioni.filter(items=['Regione', 'Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²','NumeroComuni','NumeroProvince']).reset_index(drop=True)
-
 @app.route('/', methods=['GET'])
 def home():
     
