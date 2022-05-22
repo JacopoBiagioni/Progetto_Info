@@ -1,12 +1,15 @@
 <html>
 <head>
 <h1>Scegli una Regione d'Italia</h1>
+<link rel="stylesheet" type="text/css "href="{{url_for('static', filename='home1.css')}}"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <body>
+<div class="riga">
+<div class="colonna">
 
-
-<img src=/static/images/italia_politica.jpg   usemap="#Italiapolitica" aling="middle"> 
+<img src=/static/images/italia_politica.jpg   usemap="#Italiapolitica" aling="middle">
 <map name="Italiapolitica">
 <area href="/regione/Aosta" shape="circle" coords="65,157,30" alt="Regione_ValleDAosta">
 <area href="/regione/Liguria" shape="poly" coords="62, 355, 80, 325, 107, 318, 120, 288, 201, 281, 247, 332, 157, 295, 96, 350 " alt="Regione_Ligura"> 
@@ -31,8 +34,11 @@
 
 
 </map>
-    
+</div>
+<div class="colonna">
 {{regioni|safe}}
+</div>
+</div>
 
 </body>
 
