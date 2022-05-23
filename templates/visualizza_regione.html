@@ -1,5 +1,5 @@
 <h1>{{regione}}</h1>
-
+{{tabella|safe}}
 <style>
 .colonna{float:left;width:50%;}
 </style>
@@ -7,13 +7,14 @@
 <div class="colonna">
 <img src="/mappa.png" ><br>
 <form action='/'target="_blank">
-    <input type="submit"value="home">
+    <input type="submit"value="Homepage">
 </form>
-<form action='/info_regione'target="_blank">
-    <input type="submit"value="statistiche">
+<form action='/grafico'target="_blank">
+    <input type="submit"value="Grafico_Covid">
 </form>
 </div>
 <div class="colonna">
 {{info|safe}}
+
 </div>
 </div>

@@ -37,7 +37,17 @@ def regione(nome_regione):
     province_regione = province[province.within(dati_regione.geometry.squeeze())]
     province_regione1 = info_prov[info_prov.within(dati_regione.geometry.squeeze())][['DEN_UTS','SIGLA','Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²']]
     province_regione2 = info_prov[info_prov.within(dati_regione.geometry.squeeze())]
-    return render_template('visualizza_regione.html',regione=nome_regione,info=province_regione1.to_html())
+    lst = province_regione.DEN_PROV.to_list()
+    lst1 = confini_regione.DEN_REG.to_list()
+    regioni["province_regione"] = ""
+    regioni["regioni_confinanti"] = ""
+    for i in range(0, len(regioni)):
+        regioni.at[i, 'province_regione'] = lst
+        regioni.at[i, 'regioni_confinanti'] = lst1
+    informazioni_regione_selezionata =  regioni[regioni["Regione"] == nome_regione]
+    regioni['province_regione'].astype(str)
+    regioni['regioni_confinanti'].astype(str)
+    return render_template('visualizza_regione.html',regione=nome_regione,info=province_regione1.to_html(), tabella =informazioni_regione_selezionata.to_html())
 
 
 @app.route('/mappa.png', methods=['GET'])
@@ -58,14 +68,14 @@ def info():
 
     return render_template('info.html')
 
-@app.route('/scelta', methods=['GET'])
+'''@app.route('/scelta', methods=['GET'])
 def scelta():
 
     info = request.args['scelta']
     if info == "grafico":
         return redirect(url_for("grafico"))
     else:
-        return redirect(url_for('informazioni'))
+        return redirect(url_for('informazioni'))'''
 
 @app.route('/informazioni', methods=['GET'])
 def informazioni():
@@ -83,7 +93,7 @@ def informazioni():
     regioni['province_regione'].astype(str)
     regioni['regioni_confinanti'].astype(str)
 
-    return render_template('informazioni.html', regione = nome_reg, tabella =informazioni_regione_selezionata.to_html())
+    return render_template('visualizza_regione.html', regione = nome_reg )
 
 
 
