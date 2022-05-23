@@ -1,20 +1,66 @@
-<h1>{{regione}}</h1>
-{{tabella|safe}}
-<style>
-.colonna{float:left;width:50%;}
-</style>
-<div class="riga">
-<div class="colonna">
-<img src="/mappa.png" ><br>
-<form action='/'target="_blank">
-    <input type="submit"value="Homepage">
-</form>
-<form action='/grafico'target="_blank">
-    <input type="submit"value="Grafico_Covid">
-</form>
-</div>
-<div class="colonna">
-{{info|safe}}
+<!DOCTYPE html>
+<html lang="en">
 
-</div>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <h1 class="regione1">{{regione}}</h1>
+    <div class= "tabellainfo">
+    {{tabella|safe}}
+    </div>
+    <style>
+        .colonna {
+            float: left;
+            width: auto;
+        }
+        .tabellainfo table{
+            border-color:blue;
+        }
+        .tabprov {
+            margin-top: 5%;
+        }
+
+        .tabprov table {
+            border-color:blue;
+        }
+
+        .scrittaprov {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 50px;
+        }
+        .regione1 {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 50px;
+           
+        }
+    </style>
+    <div class="riga">
+        <div class="colonna">
+            <img src="/mappa.png"><br>
+            <form action='/' target="_blank">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action='/grafico' target="_blank">
+                <input type="submit" value="Grafico_Covid">
+            </form>
+        </div>
+    </div>
+
+    <div class="tabprov">
+        <p class="scrittaprov">Province</p>
+        {{info|safe}}
+    </div>
+
+</body>
+
+</html>

@@ -23,6 +23,8 @@ info_prov.filter(items=['DEN_PROV','SIGLA','Popolazioneresidenti','Superficiekm�
 info_prov = info_prov.set_geometry("geometry")
 regioni = pd.read_html('https://www.tuttitalia.it/regioni/popolazione/')[0]
 regioni = regioni.filter(items=['Regione', 'Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²','NumeroComuni','NumeroProvince']).reset_index(drop=True)
+
+
 @app.route('/', methods=['GET'])
 def home():
     
@@ -32,6 +34,7 @@ def home():
 def regione(nome_regione):
     global dati_regione, nome_reg,confini_regione,province_regione
     nome_reg = nome_regione
+    regioni1 = regioni.copy(deep=True)
     dati_regione = Regioni[Regioni["DEN_REG"] == nome_regione]
     confini_regione = Regioni[Regioni.touches(dati_regione.geometry.squeeze())]
     province_regione = province[province.within(dati_regione.geometry.squeeze())]
@@ -39,14 +42,14 @@ def regione(nome_regione):
     province_regione2 = info_prov[info_prov.within(dati_regione.geometry.squeeze())]
     lst = province_regione.DEN_PROV.to_list()
     lst1 = confini_regione.DEN_REG.to_list()
-    regioni["province_regione"] = ""
-    regioni["regioni_confinanti"] = ""
+    regioni1["province_regione"] = ""
+    regioni1["regioni_confinanti"] = ""
     for i in range(0, len(regioni)):
-        regioni.at[i, 'province_regione'] = lst
-        regioni.at[i, 'regioni_confinanti'] = lst1
-    informazioni_regione_selezionata =  regioni[regioni["Regione"] == nome_regione]
-    regioni['province_regione'].astype(str)
-    regioni['regioni_confinanti'].astype(str)
+        regioni1.at[i, 'province_regione'] = lst
+        regioni1.at[i, 'regioni_confinanti'] = lst1
+    informazioni_regione_selezionata =  regioni1[regioni1["Regione"] == nome_regione]
+    regioni1['province_regione'].astype(str)
+    regioni1['regioni_confinanti'].astype(str)
     return render_template('visualizza_regione.html',regione=nome_regione,info=province_regione1.to_html(), tabella =informazioni_regione_selezionata.to_html())
 
 
@@ -68,37 +71,8 @@ def info():
 
     return render_template('info.html')
 
-'''@app.route('/scelta', methods=['GET'])
-def scelta():
-
-    info = request.args['scelta']
-    if info == "grafico":
-        return redirect(url_for("grafico"))
-    else:
-        return redirect(url_for('informazioni'))'''
-
-@app.route('/informazioni', methods=['GET'])
-def informazioni():
-    
-    province_regione = province[province.within(dati_regione.geometry.squeeze())]
-    confini_regione = Regioni[Regioni.touches(dati_regione.geometry.squeeze())]
-    lst = province_regione.DEN_PROV.to_list()
-    lst1 = confini_regione.DEN_REG.to_list()
-    regioni["province_regione"] = ""
-    regioni["regioni_confinanti"] = ""
-    for i in range(0, len(regioni)):
-        regioni.at[i, 'province_regione'] = lst
-        regioni.at[i, 'regioni_confinanti'] = lst1
-    informazioni_regione_selezionata =  regioni[regioni["Regione"] == nome_reg]
-    regioni['province_regione'].astype(str)
-    regioni['regioni_confinanti'].astype(str)
-
-    return render_template('visualizza_regione.html', regione = nome_reg )
-
-
 
 @app.route("/grafico", methods=["GET"])
-
 def grafico():
     global df, df1,df3
     df3 = df
@@ -107,9 +81,10 @@ def grafico():
     df1 = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
     df1.dropna(subset = ["totale_positivi_test_molecolare"], inplace=True)
     df = df[~df.denominazione_regione.str.contains("P.A.")]
+  
     
 
-    return render_template("grafico.html" )
+    return render_template("grafico.html")
 
 
 
@@ -123,7 +98,9 @@ def graficopng():
 
     # dfrisultato["periodo"] = dfrisultato["periodo"].astype(str)
     ax.plot(dfrisultato.periodo, dfrisultato.totale_positivi_test_molecolare)
-  
+    plt.title(' Andamento Covid da Gennaio 2021 a Maggio 2022', fontsize=25)
+    
+    plt.ylabel('N° Positivi', fontsize=20)
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')

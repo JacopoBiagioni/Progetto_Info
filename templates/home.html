@@ -1,45 +1,83 @@
 <html>
+
 <head>
-<h1>Scegli una Regione d'Italia</h1>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <h1>Scegli una Regione d'Italia</h1>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <style>
-.colonna{float:left;width:50%;}
+    .colonna {
+        float: left;
+        width: 50%;
+    }
+    .colonna table {
+        border-color:blue;
+    }
 </style>
+
 <body>
-<div class="riga">
-<div class="colonna">
+    <div class="riga">
+        <div class="colonna">
 
-<img src=/static/images/italia_politica.jpg   usemap="#Italiapolitica" aling="middle">
-<map name="Italiapolitica">
-<area href="/regione/Aosta" shape="circle" coords="65,157,30" alt="Regione_ValleDAosta">
-<area href="/regione/Liguria" shape="poly" coords="62, 355, 80, 325, 107, 318, 120, 288, 201, 281, 247, 332, 157, 295, 96, 350 " alt="Regione_Ligura"> 
-<area href="/regione/Piemonte" shape="poly" coords="42, 183, 102, 107, 136, 89, 149, 200, 140, 208, 150, 235, 188, 278, 110, 282, 78, 320, 22, 303, 36, 249, 7, 218" alt="Regione_Piemonte"> 
-<area href="/regione/Lombardia" shape="poly" coords="164, 136, 190, 261, 214, 220, 339, 247, 293, 187, 286, 92, 259, 119, 210, 90, 178, 156" alt="Regione_Lombardia"> 
-<area href="/regione/Trentino-Alto Adige" shape="poly" coords="298, 55, 293, 159, 377, 129, 396, 75, 419, 75, 401, 34, 315, 65" alt="Regione_Trentino"> 
-<area href="/regione/Veneto" shape="Poly" coords="305, 171, 360, 247, 423, 248, 400, 183, 470, 176, 423, 150, 427, 96, 444, 79, 389, 90, 389, 134, 332, 187" alt="Regione_Veneto">
-<area href="/regione/Friuli Venezia Giulia" shape="circle" coords="468, 122, 40" alt=""> 
-<area href="/regione/Emilia-Romagna" shape="poly" coords="204, 272, 210, 240, 391, 261, 420, 337, 373, 350, 372, 318, 228, 288" alt="">
-<area href="/regione/Toscana" shape="poly" coords="234, 298, 305, 340, 343, 329, 376, 377, 406, 372, 350, 500, 320, 505, 245, 465, 248, 329, 227, 300" alt="">
-<area href="/regione/Marche" shape="poly" coords="431, 353, 445, 363, 450, 350, 500, 391, 525, 450, 492, 472, 465, 453, 445, 397, 410, 380, 420, 370, 400, 362 " alt="">
-<area href="/regione/Umbria" shape="poly" coords="404, 386, 440, 407, 453, 453, 477, 464, 471, 481, 453, 485, 428, 500, 406, 475, 390, 475, 394, 420, 410, 414, 400, 400" alt="">
-<area href="/regione/Lazio" shape="poly" coords="382, 461, 384, 477, 394, 481, 402, 404, 408, 484, 408, 500, 431, 511, 476, 481, 481, 474, 487, 483, 488, 480, 492, 483, 490, 487, 476, 488, 475, 508, 488, 527, 486, 531, 471, 528, 465, 540, 492, 557, 492, 562, 5510, 571, 514, 557, 540, 584, 525, 621, 469, 623, 349, 509, 377, 470, 471, 465" alt="">
-<area href="/regione/Abruzzo" shape="poly" coords="532, 457, 599, 531, 581, 563, 560, 550, 540, 576, 467, 538, 497, 531, 477, 493, 500, 486, 492, 477" alt="">
-<area href="/regione/Molise" shape="poly" coords="539, 579, 556, 571, 553, 563, 570, 560, 576, 570, 598, 539, 627, 554, 620, 580, 610, 580, 613, 598, 582, 606, 550, 594, 547, 606, 541, 598" alt="">
-<area href="/regione/Puglia" shape="poly" coords="628, 552, 700, 548, 893, 720, 885, 754, 757, 693, 750, 665, 727, 669, 682, 629, 635, 628, 637, 617, 612, 586, 629, 572" alt="">
-<area href="/regione/Basilicata" shape="poly" coords="665, 637, 690, 636, 692, 650, 727, 675, 746, 670, 757, 706, 747, 729, 727, 727, 726, 748, 678, 746, 676, 736, 685, 719, 648, 661, 664, 652 " alt="">
-<area href="/regione/Campania" shape="poly" coords="526, 623, 537, 604, 551, 609, 612, 600, 637, 637, 657, 642, 643, 655, 679, 719, 652, 745, 531, 677" alt="">
-<area href="/regione/Calabria" shape="poly" coords="684, 753, 724, 752, 733, 733, 745, 733, 741, 779, 793, 804, 791, 849, 748, 869, 750, 904, 715, 953, 679, 950, 677, 926, 698, 875, 718, 874,  " alt="">
-<area href="/regione/Sardegna" shape="rect" coords="90, 619, 212, 860" alt="">
-<area href="/regione/Sicilia" shape="poly" coords="677, 920, 636, 1087, 424, 986, 446, 936" alt="">
+            <img src=/static/images/italia_politica.jpg usemap="#Italiapolitica" aling="middle">
+            <map name="Italiapolitica">
+                <area href="/regione/Aosta" shape="circle" coords="65,157,30" alt="Regione_ValleDAosta">
+                <area href="/regione/Liguria" shape="poly"
+                    coords="62, 355, 80, 325, 107, 318, 120, 288, 201, 281, 247, 332, 157, 295, 96, 350 "
+                    alt="Regione_Ligura">
+                <area href="/regione/Piemonte" shape="poly"
+                    coords="42, 183, 102, 107, 136, 89, 149, 200, 140, 208, 150, 235, 188, 278, 110, 282, 78, 320, 22, 303, 36, 249, 7, 218"
+                    alt="Regione_Piemonte">
+                <area href="/regione/Lombardia" shape="poly"
+                    coords="164, 136, 190, 261, 214, 220, 339, 247, 293, 187, 286, 92, 259, 119, 210, 90, 178, 156"
+                    alt="Regione_Lombardia">
+                <area href="/regione/Trentino-Alto Adige" shape="poly"
+                    coords="298, 55, 293, 159, 377, 129, 396, 75, 419, 75, 401, 34, 315, 65" alt="Regione_Trentino">
+                <area href="/regione/Veneto" shape="Poly"
+                    coords="305, 171, 360, 247, 423, 248, 400, 183, 470, 176, 423, 150, 427, 96, 444, 79, 389, 90, 389, 134, 332, 187"
+                    alt="Regione_Veneto">
+                <area href="/regione/Friuli Venezia Giulia" shape="circle" coords="468, 122, 40" alt="">
+                <area href="/regione/Emilia-Romagna" shape="poly"
+                    coords="204, 272, 210, 240, 391, 261, 420, 337, 373, 350, 372, 318, 228, 288" alt="">
+                <area href="/regione/Toscana" shape="poly"
+                    coords="234, 298, 305, 340, 343, 329, 376, 377, 406, 372, 350, 500, 320, 505, 245, 465, 248, 329, 227, 300"
+                    alt="">
+                <area href="/regione/Marche" shape="poly"
+                    coords="431, 353, 445, 363, 450, 350, 500, 391, 525, 450, 492, 472, 465, 453, 445, 397, 410, 380, 420, 370, 400, 362 "
+                    alt="">
+                <area href="/regione/Umbria" shape="poly"
+                    coords="404, 386, 440, 407, 453, 453, 477, 464, 471, 481, 453, 485, 428, 500, 406, 475, 390, 475, 394, 420, 410, 414, 400, 400"
+                    alt="">
+                <area href="/regione/Lazio" shape="poly"
+                    coords="382, 461, 384, 477, 394, 481, 402, 404, 408, 484, 408, 500, 431, 511, 476, 481, 481, 474, 487, 483, 488, 480, 492, 483, 490, 487, 476, 488, 475, 508, 488, 527, 486, 531, 471, 528, 465, 540, 492, 557, 492, 562, 5510, 571, 514, 557, 540, 584, 525, 621, 469, 623, 349, 509, 377, 470, 471, 465"
+                    alt="">
+                <area href="/regione/Abruzzo" shape="poly"
+                    coords="532, 457, 599, 531, 581, 563, 560, 550, 540, 576, 467, 538, 497, 531, 477, 493, 500, 486, 492, 477"
+                    alt="">
+                <area href="/regione/Molise" shape="poly"
+                    coords="539, 579, 556, 571, 553, 563, 570, 560, 576, 570, 598, 539, 627, 554, 620, 580, 610, 580, 613, 598, 582, 606, 550, 594, 547, 606, 541, 598"
+                    alt="">
+                <area href="/regione/Puglia" shape="poly"
+                    coords="628, 552, 700, 548, 893, 720, 885, 754, 757, 693, 750, 665, 727, 669, 682, 629, 635, 628, 637, 617, 612, 586, 629, 572"
+                    alt="">
+                <area href="/regione/Basilicata" shape="poly"
+                    coords="665, 637, 690, 636, 692, 650, 727, 675, 746, 670, 757, 706, 747, 729, 727, 727, 726, 748, 678, 746, 676, 736, 685, 719, 648, 661, 664, 652 "
+                    alt="">
+                <area href="/regione/Campania" shape="poly"
+                    coords="526, 623, 537, 604, 551, 609, 612, 600, 637, 637, 657, 642, 643, 655, 679, 719, 652, 745, 531, 677"
+                    alt="">
+                <area href="/regione/Calabria" shape="poly"
+                    coords="684, 753, 724, 752, 733, 733, 745, 733, 741, 779, 793, 804, 791, 849, 748, 869, 750, 904, 715, 953, 679, 950, 677, 926, 698, 875, 718, 874,  "
+                    alt="">
+                <area href="/regione/Sardegna" shape="rect" coords="90, 619, 212, 860" alt="">
+                <area href="/regione/Sicilia" shape="poly" coords="677, 920, 636, 1087, 424, 986, 446, 936" alt="">
 
 
-</map>
-</div>
-<div class="colonna">
-{{regioni|safe}}
-</div>
-</div>
+            </map>
+        </div>
+        <div class="colonna">
+            {{regioni|safe}}
+        </div>
+    </div>
 
 </body>
 
