@@ -11,6 +11,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
+from datetime import datetime
+
+print(datetime.today().strftime('%A, %B %d, %Y %H:%M:%S'))
 #pd.plotting.register_matplotlib_converters()
 df = pd.read_csv('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
 Regioni =  gpd.read_file('/workspace/Progetto_Info/Reg01012021_g_WGS84.zip')
@@ -23,10 +26,13 @@ info_prov.filter(items=['DEN_PROV','SIGLA','Popolazioneresidenti','Superficiekm�
 info_prov = info_prov.set_geometry("geometry")
 regioni = pd.read_html('https://www.tuttitalia.it/regioni/popolazione/')[0]
 regioni = regioni.filter(items=['Regione', 'Popolazioneresidenti','Superficiekm²','Densitàabitanti/km²','NumeroComuni','NumeroProvince']).reset_index(drop=True)
-
-
 @app.route('/', methods=['GET'])
 def home():
+    
+    return render_template('posthome.html')
+
+@app.route('/posthome', methods=['GET'])
+def prehome():
     
     return render_template('home.html',regioni = regioni.to_html())
 
@@ -74,14 +80,15 @@ def info():
 
 @app.route("/grafico", methods=["GET"])
 def grafico():
-    global df, df1,df3
+    global df, df1,df3,ultima_data,prima_data
     df3 = df
     df3['data'] = pd.to_datetime(df['data'])
     df['periodo']= df3['data'] #.dt.to_period('D')
     df1 = df.filter(items=['denominazione_regione', 'periodo','totale_positivi_test_molecolare'])
     df1.dropna(subset = ["totale_positivi_test_molecolare"], inplace=True)
     df = df[~df.denominazione_regione.str.contains("P.A.")]
-  
+    ultima_data = str(pd.to_datetime(df1['periodo']).max()).split(' ')[0]
+    prima_data = str(pd.to_datetime(df1['periodo']).min()).split(' ')[0]
     
 
     return render_template("grafico.html")
@@ -98,8 +105,9 @@ def graficopng():
 
     # dfrisultato["periodo"] = dfrisultato["periodo"].astype(str)
     ax.plot(dfrisultato.periodo, dfrisultato.totale_positivi_test_molecolare)
-    plt.title(' Andamento Covid da Gennaio 2021 a Maggio 2022', fontsize=25)
-    
+    plt.title(f'Andamento Covid da {prima_data} a {ultima_data}', fontsize=25)
+    ax.set_title(f' Andamento Covid da {prima_data} a {ultima_data}', fontname="Times New Roman", size=20,fontweight="bold")
+
     plt.ylabel('N° Positivi', fontsize=20)
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
